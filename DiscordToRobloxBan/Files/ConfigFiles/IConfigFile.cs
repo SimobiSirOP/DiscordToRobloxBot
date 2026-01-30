@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using CrownSilliBot.Misc;
+using DiscordToRobloxBan.Helpers;
 
 namespace DiscordToRobloxBan.Files;
 

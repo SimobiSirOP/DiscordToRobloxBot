@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using System.Text.Unicode;
 
-namespace CrownSilliBot.Misc;
+namespace DiscordToRobloxBan.Helpers;
 
 public class Serializer
 {
@@ -39,7 +39,33 @@ public class Serializer
     /// </summary>
     public static T SerializeFromString<T>(string json)
     {
-        return JsonSerializer.Deserialize<T>(json, DefaultSettings);
+        return JsonSerializer.Deserialize<T>(json, DefaultSettings)!;
+    }
+
+    /// <summary>
+    ///     Desearializes an object from JSON placed on specific Path
+    /// </summary>
+    /// <param name="json">Json string</param>
+    /// <param name="path">Path to object inside JSON</param>
+    public static T SerializeFromString<T>(string json, string path)
+    {
+        if (string.IsNullOrWhiteSpace(path) && !string.IsNullOrWhiteSpace(json))
+            return SerializeFromString<T>(json);
+        
+        using JsonDocument doc = SerializeFromString<JsonDocument>(json);
+        JsonElement currentElement = doc.RootElement;
+        string[] segments = path.Trim().Split(new[] { '/', '.', '\\', ',' });
+        
+        foreach (var segment in segments)
+        {
+            if (currentElement.ValueKind == JsonValueKind.Object &&
+                currentElement.TryGetProperty(segment, out var nextElement))
+                currentElement = nextElement;
+            else
+                throw new JsonException($"Path segment '{segment}' not found in the JSON structure.");
+        }
+
+        return currentElement.Deserialize<T>(DefaultSettings)!;
     }
 
 
@@ -56,32 +82,6 @@ public class Serializer
     /// </summary>
     public static T SerializeFromFile<T>(string path)
     {
-        return JsonSerializer.Deserialize<T>(File.ReadAllText(path), DefaultSettings);
-    }
-
-    public static bool CheckFileSerializability<T>(string path)
-    {
-        try
-        {
-            SerializeFromFile<T>(path);
-            return true;
-        }
-        catch (Exception ex)
-        {
-            return false;
-        }
-    }
-
-    public static bool CheckStringSerializability<T>(string str)
-    {
-        try
-        {
-            SerializeFromString<T>(str);
-            return true;
-        }
-        catch (Exception ex)
-        {
-            return false;
-        }
+        return JsonSerializer.Deserialize<T>(File.ReadAllText(path), DefaultSettings)!;
     }
 }

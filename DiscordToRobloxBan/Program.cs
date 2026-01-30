@@ -1,7 +1,6 @@
 ﻿
-
-using CrownSilliBot.Misc;
 using DiscordToRobloxBan.Helpers;
+using DiscordToRobloxBan.RobloxAPI;
 
 namespace DiscordToRobloxBan
 {
@@ -9,7 +8,8 @@ namespace DiscordToRobloxBan
     {
         public static void Main(string[] args)
         {
-            Printer.Print( Serializer.SerializeToString(RobloxHandler.GetUsersFromUsername("SimobiSirOP").GetAwaiter().GetResult()));
+            RobloxApiClient robloxApiClient = new RobloxApiClient(Master.mainConfig.RobloxApiToken);
+            Printer.Print(robloxApiClient.GetUsersFromUsernames(new[] { "valier999" }).GetAwaiter().GetResult()[0].DisplayName!, null, true);
         }
     }
 }

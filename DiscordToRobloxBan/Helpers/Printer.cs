@@ -4,17 +4,19 @@ namespace DiscordToRobloxBan.Helpers;
 
 public static class Printer
 {
-    public static void Print(string message, LogImportance importance = LogImportance.Info, bool alwaysWrite = false)
+    public static void Print(string message, LogImportance? importance = LogImportance.Info, bool alwaysWriteToLogs = false)
     {
-        if (Master.mainConfig.LogImportance >= importance || alwaysWrite)
+        if ( (importance != null && Master.mainConfig.LogImportance >= importance) || alwaysWriteToLogs)
         {
             Console.WriteLine(message);
             WriteToLogs(message, importance);
         }
     }
 
-    public static void WriteToLogs(string message, LogImportance importance = LogImportance.Info)
+    private static void WriteToLogs(string message, LogImportance? importance = LogImportance.Info)
     {
+        if (importance == null) return;
+        
         var stringBuilder = new StringBuilder();
         stringBuilder.Append($"[{DateTime.Now:HH:mm:ss}] | ");
         if (importance <= LogImportance.Warning)

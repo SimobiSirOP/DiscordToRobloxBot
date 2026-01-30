@@ -9,12 +9,13 @@ public  class MainConfig : ConfigFile<MainConfig>
     
     public string DiscordBotToken = "";
 
-    public long RobloxPlaceId = 0;
+    public long RobloxUniverseId = 0;
 
     public string BanMessage = "Use formatted string, arguments: {name}";
 
     public LogImportance LogImportance = LogImportance.Notice;
 
-    [JsonIgnore] public override string PathToFile { get; } = Path.Combine(Master.ConfigsPath, "config.json");
+    [JsonIgnore]
+    public override string PathToFile { get; } = Path.Combine(Master.ConfigsPath, "config.json");
     
 }

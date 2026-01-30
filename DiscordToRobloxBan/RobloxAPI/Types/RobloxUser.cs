@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace DiscordToRobloxBan.Files;
+namespace DiscordToRobloxBan.RobloxAPI.Types;
 
 public class RobloxUser
 {
