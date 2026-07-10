@@ -1,14 +1,14 @@
 ﻿using System.Text.Json.Serialization;
 using DiscordToRobloxBan.Helpers;
 
-namespace DiscordToRobloxBan.Files;
+namespace DiscordToRobloxBan.Files.ConfigFiles;
 
 
-public abstract class ConfigFile<T> where T : ConfigFile<T>, new()
+public abstract class ConfigFileBase<T> where T : ConfigFileBase<T>, new()
 {
-    [JsonIgnore] public abstract string PathToFile { get; }
+    [JsonIgnore] public abstract string PathToFile { get; protected set; }
 
-    public virtual T Load()
+    public T Load()
     {
         if (!File.Exists(PathToFile))
         {
@@ -19,11 +19,12 @@ public abstract class ConfigFile<T> where T : ConfigFile<T>, new()
 
         var result = Serializer.SerializeFromFile<T>(Path.Combine(PathToFile));
         Serializer.SerializeToFile(Path.Combine(PathToFile), result);
+        result.PathToFile = PathToFile;
         return result;
     }
 
-    public virtual void Save<T>(T file)
+    public void Save()
     {
-        Serializer.SerializeToFile(PathToFile, file);
+        Serializer.SerializeToFile(PathToFile, this);
     }
 }

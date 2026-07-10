@@ -1,21 +1,28 @@
 ﻿using System.Text.Json.Serialization;
 using DiscordToRobloxBan.Helpers;
+using NetCord.Logging;
 
-namespace DiscordToRobloxBan.Files;
+namespace DiscordToRobloxBan.Files.ConfigFiles;
 
-public  class MainConfig : ConfigFile<MainConfig>
+public  class MainConfig : ConfigFileBase<MainConfig>
 {
     public string RobloxApiToken = "";
     
     public string DiscordBotToken = "";
 
-    public long RobloxUniverseId = 0;
-
-    public string BanMessage = "Use formatted string, arguments: {name}";
-
-    public LogImportance LogImportance = LogImportance.Notice;
-
-    [JsonIgnore]
-    public override string PathToFile { get; } = Path.Combine(Master.ConfigsPath, "config.json");
+    public long? RobloxUniverseId = 0;
     
+    public ulong MainGuildId = 0;
+    
+    public LogLevel LogLevel = LogLevel.Information;
+    
+
+    [JsonIgnore] public sealed override string PathToFile { get; protected set; } = null!;
+
+    public MainConfig() {}
+
+    public MainConfig(string pathToFile)
+    {
+        PathToFile = pathToFile;
+    }
 }

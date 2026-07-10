@@ -9,7 +9,16 @@
 
     <ItemGroup>
       <PackageReference Include="NetCord" Version="1.0.0-alpha.460" />
+      <PackageReference Include="NetCord.Hosting" Version="1.0.0-alpha.460" />
+      <PackageReference Include="NetCord.Hosting.Services" Version="1.0.0-alpha.460" />
       <PackageReference Include="NetCord.Services" Version="1.0.0-alpha.460" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="RobloxCloudApi">
+        <HintPath>..\..\RobloxApi\RobloxApi\bin\Release\net8.0\RobloxCloudApi.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+    
+    
 </Project>
